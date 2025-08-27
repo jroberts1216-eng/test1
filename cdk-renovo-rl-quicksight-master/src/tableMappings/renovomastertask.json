@@ -1,0 +1,226 @@
+{
+    "rules": [
+        {
+            "rule-type": "selection",
+            "rule-id": "097315523",
+            "rule-name": "097315523",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtdevices"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "198562516",
+            "rule-name": "198562516",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtDeviceAcqPricing"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "922549386",
+            "rule-name": "922549386",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtFrequencyChangeQueue"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "922544025",
+            "rule-name": "922544025",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtmodels"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "922538935",
+            "rule-name": "922538935",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_mfgmodalities"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "922535942",
+            "rule-name": "922535942",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_pmSchedules"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "922533171",
+            "rule-name": "922533171",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "localPermissions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "806484630",
+            "rule-name": "806484630",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "DailyDate"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "027802499",
+            "rule-name": "027802499",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seTimeTypesExt"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "002508071",
+            "rule-name": "002508071",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "SageRegions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "595178144",
+            "rule-name": "595178144",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_lookups"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "595120140",
+            "rule-name": "595120140",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "organizations"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "595115815",
+            "rule-name": "595115815",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "userOrgs"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "595108666",
+            "rule-name": "595108666",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "users"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "486365924",
+            "rule-name": "486365924",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtVendors"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "417163330",
+            "rule-name": "417163330",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "parallel-load": null,
+            "rule-action": "add-column",
+            "value": "ingestion_operation",
+            "expression": "$AR_H_OPERATION",
+            "old-value": "I",
+            "data-type": {
+                "type": "string",
+                "length": "20",
+                "scale": ""
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "408997017",
+            "rule-name": "408997017",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "value": "ingestion_timestamp",
+            "expression": "$AR_H_TIMESTAMP",
+            "data-type": {
+                "type": "datetime",
+                "precision": 7
+            },
+            "parallel-load": null,
+            "rule-action": "add-column"
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "480982740",
+            "rule-name": "480982740",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "rule-action": "add-column",
+            "old-value": null,
+            "parallel-load": null,
+            "value": "ingestion_seq",
+            "expression": "$AR_H_CHANGE_SEQ",
+            "data-type": {
+                "type": "string",
+                "length": 50
+            }
+        }
+    ]
+}

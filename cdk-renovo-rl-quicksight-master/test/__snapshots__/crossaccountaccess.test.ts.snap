@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "QuickSightCrossAccountPolicy8D929E90": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "This policy is intended to be used with cross-account access to QuickSight and the wildcarded permissions are necessary for the use case.         See role policy guidance here: https://aws.amazon.com/blogs/modernizing-with-aws/embedding-amazon-quicksight-analytics-in-net-applications/",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Description": "Policy to be used with cross-account access to QuickSight",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "quicksight:ListUsers",
+                "quicksight:DescribeUser",
+                "quicksight:RegisterUser",
+                "quicksight:ListDashboards",
+                "quicksight:DescribeDashboard",
+                "quicksight:ListDashboardVersions",
+                "quicksight:GetSessionEmbedUrl",
+                "quicksight:CreateGroupMembership",
+                "quicksight:DeleteGroupMembership",
+                "quicksight:DeleteUser",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+              "Sid": "Default",
+            },
+            {
+              "Action": [
+                "quicksight:GenerateEmbedUrlForRegisteredUser",
+                "quicksight:GetAuthCode",
+                "quicksight:SearchDashboards",
+              ],
+              "Effect": "Allow",
+              "Resource": "arn:aws:quicksight:us-east-1:123456789012:user/*",
+              "Sid": "AllowEmbedForRegisteredUser",
+            },
+            {
+              "Action": "quicksight:SearchDashboards",
+              "Effect": "Allow",
+              "Resource": "arn:aws:quicksight:us-east-1:123456789012:dashboard/*",
+              "Sid": "AllowSearchDashboards",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "QuickSightCrossAccountRoleB6A3E0A2": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "ab1c723d-45e6-789f-ghi1-4j23k4l56m78",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789013:root",
+                    ],
+                  ],
+                },
+              },
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Condition": {
+                "StringEquals": {
+                  "sts:ExternalId": "ab1c723d-45e6-789f-ghi1-4j23k4l56m78",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::123456789014:root",
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Ref": "QuickSightCrossAccountPolicy8D929E90",
+          },
+        ],
+        "RoleName": "renovolive-quicksight-cross-account-role",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

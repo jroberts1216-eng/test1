@@ -1,0 +1,602 @@
+{
+    "rules": [
+        {
+            "rule-type": "selection",
+            "rule-id": "414301473",
+            "rule-name": "414301473",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "regions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "409372190",
+            "rule-name": "409372190",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "localPermission_userSettings"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "409108047",
+            "rule-name": "409108047",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "vsc_liEquipment"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "409102975",
+            "rule-name": "409102975",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_vpLiAdjustments"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "409095601",
+            "rule-name": "409095601",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "inventoryItems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451685528",
+            "rule-name": "451685528",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "vsc_lineitems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451681710",
+            "rule-name": "451681710",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "vs_vendorsubcontract"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451678456",
+            "rule-name": "451678456",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "vendorInvoices"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451675415",
+            "rule-name": "451675415",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "vendors2"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451671181",
+            "rule-name": "451671181",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_time"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451668398",
+            "rule-name": "451668398",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_specialConditions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451665314",
+            "rule-name": "451665314",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_serviceNotes"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451662291",
+            "rule-name": "451662291",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_serviceevents"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451658229",
+            "rule-name": "451658229",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_partsused"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451648212",
+            "rule-name": "451648212",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "se_assignedUsers"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451644446",
+            "rule-name": "451644446",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_liExchanges"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451640888",
+            "rule-name": "451640888",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_vplineitems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451636288",
+            "rule-name": "451636288",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_vendorpayments"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451631538",
+            "rule-name": "451631538",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_purchaseorders"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451629189",
+            "rule-name": "451629189",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "po_lineItems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451625983",
+            "rule-name": "451625983",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtclModels"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451622851",
+            "rule-name": "451622851",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtclDeviceTemps"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451619757",
+            "rule-name": "451619757",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtclDevices"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451615202",
+            "rule-name": "451615202",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtclAEM"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451579278",
+            "rule-name": "451579278",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "locationRoles"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451579179",
+            "rule-name": "451579179",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "locationRole_users"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451573425",
+            "rule-name": "451573425",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "locationRole_permissions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451570208",
+            "rule-name": "451570208",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seSymptoms"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451565268",
+            "rule-name": "451565268",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seStatus"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451561691",
+            "rule-name": "451561691",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seSpecialConditions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451555913",
+            "rule-name": "451555913",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seResolutions"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451545778",
+            "rule-name": "451545778",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_seDiagnosis"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451542167",
+            "rule-name": "451542167",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "l_equipmentStatus"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451538901",
+            "rule-name": "451538901",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "ismSystems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451535311",
+            "rule-name": "451535311",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "facility_equipment"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451531455",
+            "rule-name": "451531455",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "facility_costCenters"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451527907",
+            "rule-name": "451527907",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "facility_equipmentBudget"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451517078",
+            "rule-name": "451517078",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "facilities"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451513268",
+            "rule-name": "451513268",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "documents"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451509640",
+            "rule-name": "451509640",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "coverage_coverageDetailsTemplates"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451506243",
+            "rule-name": "451506243",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "coverage_coverageSpecification"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451499822",
+            "rule-name": "451499822",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "clientsystems"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "selection",
+            "rule-id": "451487095",
+            "rule-name": "451487095",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "clients"
+            },
+            "rule-action": "include",
+            "filters": []
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "7",
+            "rule-target": "column",
+            "rule-name": "uint1-to-int32",
+            "rule-action": "change-data-type",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%",
+                "column-name": "%",
+                "data-type": "uint1"
+            },
+            "data-type": {
+                "type": "int4"
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "6",
+            "rule-name": "unit64-to-int64",
+            "rule-action": "change-data-type",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%",
+                "column-name": "%",
+                "data-type": "uint8"
+            },
+            "data-type": {
+                "type": "int8"
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "811578140",
+            "rule-target": "column",
+            "rule-name": "uint32-to-int32",
+            "rule-action": "change-data-type",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%",
+                "column-name": "%",
+                "data-type": "uint4"
+            },
+            "data-type": {
+                "type": "int4"
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "010266119",
+            "rule-name": "010266119",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "mtclDeviceTemps"
+            },
+            "parallel-load": null,
+            "rule-action": "add-column",
+            "value": "mtclDevTmp_formattedName",
+            "expression": "'TEMP: ' ||  UPPER($mtclDevTmp_vendor) ||  ' - ' ||  $mtclDevTmp_model ||  ', ' ||  $mtclDevTmp_device ",
+            "old-value": null,
+            "data-type": {
+                "type": "string",
+                "length": "100",
+                "scale": ""
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "480982740",
+            "rule-name": "480982740",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "rule-action": "add-column",
+            "old-value": null,
+            "parallel-load": null,
+            "value": "ingestion_seq",
+            "expression": "$AR_H_CHANGE_SEQ",
+            "data-type": {
+                "type": "string",
+                "length": 50
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "417163330",
+            "rule-name": "417163330",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "parallel-load": null,
+            "rule-action": "add-column",
+            "value": "ingestion_operation",
+            "expression": "$AR_H_OPERATION",
+            "old-value": "I",
+            "data-type": {
+                "type": "string",
+                "length": "20",
+                "scale": ""
+            }
+        },
+        {
+            "rule-type": "transformation",
+            "rule-id": "408997017",
+            "rule-name": "408997017",
+            "rule-target": "column",
+            "object-locator": {
+                "schema-name": "%",
+                "table-name": "%"
+            },
+            "value": "ingestion_timestamp",
+            "expression": "$AR_H_TIMESTAMP",
+            "data-type": {
+                "type": "datetime",
+                "precision": 7
+            },
+            "parallel-load": null,
+            "rule-action": "add-column"
+        }
+    ]
+}

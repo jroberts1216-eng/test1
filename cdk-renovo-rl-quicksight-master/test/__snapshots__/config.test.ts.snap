@@ -1,0 +1,2327 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "QuickSightVpcConnection": {
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "Name": "ServicesVpcConnection",
+        "RoleArn": {
+          "Fn::GetAtt": [
+            "executionroleD9A39BE6",
+            "Arn",
+          ],
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "securitygroupE7525979",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetIds": [
+          "p-12345",
+          "p-67890",
+        ],
+        "VPCConnectionId": "RlDevQuickSightConfig",
+      },
+      "Type": "AWS::QuickSight::VPCConnection",
+    },
+    "RedshiftDataSource": {
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "Credentials": {
+          "CredentialPair": {
+            "Password": {
+              "Fn::Join": [
+                "",
+                [
+                  "{{resolve:secretsmanager:arn:",
+                  {
+                    "Ref": "AWS::Partition",
+                  },
+                  ":secretsmanager:us-east-1:123456789012:secret:redshift!renovo-np-admin:SecretString:password::}}",
+                ],
+              ],
+            },
+            "Username": {
+              "Fn::Join": [
+                "",
+                [
+                  "{{resolve:secretsmanager:arn:",
+                  {
+                    "Ref": "AWS::Partition",
+                  },
+                  ":secretsmanager:us-east-1:123456789012:secret:redshift!renovo-np-admin:SecretString:username::}}",
+                ],
+              ],
+            },
+          },
+        },
+        "DataSourceId": "redshift-serverless-ds",
+        "DataSourceParameters": {
+          "RedshiftParameters": {
+            "Database": "prod",
+            "Host": "vpcendpoint-endpoint-dwbnwd5gsq3akgubfbmr.719035735300.us-east-1.redshift-serverless.amazonaws.com",
+            "Port": 5439,
+          },
+        },
+        "Name": "RedshiftServerlessDataSource",
+        "Permissions": [
+          {
+            "Actions": [
+              "quicksight:DescribeDataSource",
+              "quicksight:DescribeDataSourcePermissions",
+              "quicksight:PassDataSource",
+            ],
+            "Principal": "arn:aws:quicksight:us-east-1:1234567890:user/default",
+          },
+        ],
+        "Type": "REDSHIFT",
+        "VpcConnectionProperties": {
+          "VpcConnectionArn": {
+            "Fn::GetAtt": [
+              "QuickSightVpcConnection",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::QuickSight::DataSource",
+    },
+    "executionroleD9A39BE6": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "quicksight.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Ref": "quicksightvpcconnectionpolicy55A173CC",
+          },
+        ],
+        "RoleName": "QuickSightVpcConnectionExecutionRole",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "quicksightvpcconnectionpolicy55A173CC": {
+      "Metadata": {
+        "cdk_nag": {
+          "rules_to_suppress": [
+            {
+              "id": "AwsSolutions-IAM5",
+              "reason": "QuickSight VPC connection policy requires these permissions to set up the VPC connection",
+            },
+          ],
+        },
+      },
+      "Properties": {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:ModifyNetworkInterfaceAttribute",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeSecurityGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "rlspermissions": {
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "DataSetId": "rls_permissions_cdk",
+        "DataSetUsageConfiguration": {
+          "DisableUseAsDirectQuerySource": false,
+          "DisableUseAsImportedSource": false,
+        },
+        "ImportMode": "DIRECT_QUERY",
+        "LogicalTableMap": {
+          "rlspermissionslog": {
+            "Alias": "rls_permissions_cdk",
+            "DataTransforms": [
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "region_id",
+                  "Tags": [
+                    {
+                      "ColumnGeographicRole": "STATE",
+                    },
+                  ],
+                },
+              },
+            ],
+            "Source": {
+              "PhysicalTableId": "rlspermissionsphy",
+            },
+          },
+        },
+        "Name": "rls_permissions_cdk",
+        "Permissions": [
+          {
+            "Actions": [
+              "quicksight:DescribeDataSet",
+              "quicksight:DescribeDataSetPermissions",
+              "quicksight:PassDataSet",
+              "quicksight:DescribeIngestion",
+              "quicksight:ListIngestions",
+              "quicksight:UpdateDataSetPermissions",
+            ],
+            "Principal": "arn:aws:quicksight:us-east-1:1234567890:user/default",
+          },
+        ],
+        "PhysicalTableMap": {
+          "rlspermissionsphy": {
+            "RelationalTable": {
+              "DataSourceArn": {
+                "Fn::GetAtt": [
+                  "RedshiftDataSource",
+                  "Arn",
+                ],
+              },
+              "InputColumns": [
+                {
+                  "Name": "username",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "db",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facility_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "system_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "client_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "region_id",
+                  "Type": "STRING",
+                },
+              ],
+              "Name": "rls_permissions_cdk",
+              "Schema": "analytics",
+            },
+          },
+        },
+      },
+      "Type": "AWS::QuickSight::DataSet",
+    },
+    "securitygroupE7525979": {
+      "Properties": {
+        "GroupDescription": "RlDevQuickSightConfig/security-group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": "vpc-12345",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "vidmlist": {
+      "DependsOn": [
+        "rlspermissions",
+      ],
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "DataSetId": "vi_dm_list_cdk",
+        "DataSetUsageConfiguration": {
+          "DisableUseAsDirectQuerySource": false,
+          "DisableUseAsImportedSource": false,
+        },
+        "DatasetParameters": [
+          {
+            "DecimalDatasetParameter": {
+              "DefaultValues": {
+                "StaticValues": [
+                  3191,
+                ],
+              },
+              "Id": "368d9e65-197f-4a8a-8d04-7a65fd08d5f5",
+              "Name": "UserID",
+              "ValueType": "SINGLE_VALUED",
+            },
+          },
+          {
+            "StringDatasetParameter": {
+              "DefaultValues": {
+                "StaticValues": [
+                  "a",
+                ],
+              },
+              "Id": "a4997117-2702-4637-9abe-2a57e8d37b58",
+              "Name": "locationkeyparameter",
+              "ValueType": "SINGLE_VALUED",
+            },
+          },
+        ],
+        "FieldFolders": {
+          "Calculations": {
+            "Columns": [
+              "Age",
+              "Days To Close",
+              "Accidental Damage KPI",
+              "95% Target",
+              "3% Target",
+              "User Errors KPI",
+              "5% Target",
+              "2% Target",
+              "Cannot Duplicate KPI",
+              "Equipment Repair KPI",
+            ],
+          },
+        },
+        "ImportMode": "SPICE",
+        "LogicalTableMap": {
+          "vidmlistcdk": {
+            "Alias": "vi_dm_list",
+            "DataTransforms": [
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "system_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "facility_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "client_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "region_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "f08ae171-18ec-4c51-a44a-5c2b44ef628e",
+                      "ColumnName": "Age",
+                      "Expression": "dateDiff(receiveddate,now())",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "9eeab72c-40de-43e6-a1ba-fb8cee8ae148",
+                      "ColumnName": "Days To Close",
+                      "Expression": "dateDiff(receiveddate,{se_completedutc})",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "a0164dcd-82b5-4fb8-9d10-adc0d145ce3e",
+                      "ColumnName": "se_sm",
+                      "Expression": "receiveddate",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "0b6ec35d-f137-4370-8895-8bc08876c665",
+                      "ColumnName": "Accidental Damage KPI",
+                      "Expression": "countIf(serviceeventid,{sestat_name}='Accidental Damage') / count(serviceeventid)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "fc6f6c1f-581a-43c1-b337-ed2aca574b30",
+                      "ColumnName": "3% Target",
+                      "Expression": "0.03",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "8e5a12b8-fc44-4f83-aa54-e57138619045",
+                      "ColumnName": "User Errors KPI",
+                      "Expression": "countIf(serviceeventid,{sestat_name}='Operator Error') / count(serviceeventid)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6e67a4a5-4a8b-40c0-94cc-93d0afe74d2f",
+                      "ColumnName": "Cannot Duplicate KPI",
+                      "Expression": "countIf(serviceeventid,{sestat_name}='Cannot Duplicate') / count(serviceeventid)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "fe092785-717b-4458-a8bb-1c09a570c0a5",
+                      "ColumnName": "2% Target",
+                      "Expression": "0.02    ",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "81b6d61f-6cd7-42ab-b0cd-bd96ef5d6c9e",
+                      "ColumnName": "5% Target",
+                      "Expression": "0.05",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "8d2da324-a497-4e2b-b042-d43402b191f4",
+                      "ColumnName": "95% Target",
+                      "Expression": "0.95",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6b836de1-dddf-4943-8dbb-2962f34b5868",
+                      "ColumnName": "Manufacter Recalls",
+                      "Expression": "countIf(serviceeventid,{sestat_name}='Manufacturer Alert/Recall')",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6d62779b-6681-408d-9d51-6b884fc4e21d",
+                      "ColumnName": "userid",
+                      "Expression": "\${UserID}",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "e152543e-f0f9-416d-9c33-db2d42380fa1",
+                      "ColumnName": "Equipment Repair KPI",
+                      "Expression": "countIf(serviceeventid,status='Completed' or status='Closed') / count(serviceeventid)",
+                    },
+                  ],
+                },
+              },
+              {
+                "ProjectOperation": {
+                  "ProjectedColumns": [
+                    "db",
+                    "system_id",
+                    "facility_id",
+                    "client_id",
+                    "region_id",
+                    "system_name",
+                    "facility",
+                    "costcenter",
+                    "receiveddate",
+                    "se_workcompletedutc",
+                    "serviceeventid",
+                    "se_no",
+                    "status",
+                    "cetagno",
+                    "serialnumber",
+                    "location",
+                    "facassetnumber",
+                    "ismissioncritical",
+                    "device",
+                    "manufacturer",
+                    "model",
+                    "smdm",
+                    "is_incoming_inspection",
+                    "smsched",
+                    "technician",
+                    "po_number",
+                    "specialcondition",
+                    "se_status",
+                    "se_completedutc",
+                    "se__sm",
+                    "notes1",
+                    "notes2",
+                    "priority",
+                    "problem",
+                    "problem_text",
+                    "resolution",
+                    "resolutioncode",
+                    "symptom",
+                    "diagnosis",
+                    "parts_used",
+                    "sestat_name",
+                    "daystoresolution",
+                    "locationkey",
+                    "l_sespecialconditionid",
+                    "parts_qty_ordered",
+                    "parts_qty_received",
+                    "Age",
+                    "Days To Close",
+                    "se_sm",
+                    "Accidental Damage KPI",
+                    "3% Target",
+                    "User Errors KPI",
+                    "Cannot Duplicate KPI",
+                    "2% Target",
+                    "5% Target",
+                    "95% Target",
+                    "Manufacter Recalls",
+                    "userid",
+                    "Equipment Repair KPI",
+                  ],
+                },
+              },
+            ],
+            "Source": {
+              "PhysicalTableId": "vidmlistcdkphy",
+            },
+          },
+        },
+        "Name": "vi_dm_list_cdk",
+        "Permissions": [
+          {
+            "Actions": [
+              "quicksight:DescribeDataSet",
+              "quicksight:DescribeDataSetPermissions",
+              "quicksight:PassDataSet",
+              "quicksight:DescribeIngestion",
+              "quicksight:ListIngestions",
+              "quicksight:UpdateDataSet",
+              "quicksight:UpdateDataSetPermissions",
+            ],
+            "Principal": "arn:aws:quicksight:us-east-1:1234567890:user/default",
+          },
+        ],
+        "PhysicalTableMap": {
+          "vidmlistcdkphy": {
+            "RelationalTable": {
+              "DataSourceArn": {
+                "Fn::GetAtt": [
+                  "RedshiftDataSource",
+                  "Arn",
+                ],
+              },
+              "InputColumns": [
+                {
+                  "Name": "db",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "system_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "facility_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "client_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "region_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "system_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facility",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "costcenter",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "receiveddate",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "se_workcompletedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "serviceeventid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "se_no",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "status",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "cetagno",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "serialnumber",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "location",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facassetnumber",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ismissioncritical",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "device",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "manufacturer",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "model",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "smdm",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "is_incoming_inspection",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "smsched",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "technician",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_number",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "specialcondition",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "se_status",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "se_completedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "se__sm",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "notes1",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "notes2",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "priority",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "problem",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "problem_text",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "resolution",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "resolutioncode",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "symptom",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "diagnosis",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "parts_used",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "sestat_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "daystoresolution",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "locationkey",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "l_sespecialconditionid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "parts_qty_ordered",
+                  "SubType": "FIXED",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "parts_qty_received",
+                  "SubType": "FIXED",
+                  "Type": "DECIMAL",
+                },
+              ],
+              "Name": "vi_dm_list",
+              "Schema": "analytics",
+            },
+          },
+        },
+        "RowLevelPermissionDataSet": {
+          "Arn": "arn:aws:quicksight:us-east-1:719035735300:dataset/rls_permissions_cdk",
+          "FormatVersion": "VERSION_1",
+          "Namespace": "default",
+          "PermissionPolicy": "GRANT_ACCESS",
+          "Status": "ENABLED",
+        },
+      },
+      "Type": "AWS::QuickSight::DataSet",
+    },
+    "vipurchaseorder": {
+      "DependsOn": [
+        "rlspermissions",
+      ],
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "DataSetId": "vi_purchase_order_cdk",
+        "DataSetUsageConfiguration": {
+          "DisableUseAsDirectQuerySource": false,
+          "DisableUseAsImportedSource": false,
+        },
+        "ImportMode": "SPICE",
+        "LogicalTableMap": {
+          "vipurchaseorderlog": {
+            "Alias": "vi_purchase_order",
+            "DataTransforms": [
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total",
+                  "NewColumnName": "PO Total",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total_regular_value",
+                  "NewColumnName": "Regular",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total_exchange_value",
+                  "NewColumnName": "Exchange",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total_shipping_value",
+                  "NewColumnName": "Shipping",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total_tax_value",
+                  "NewColumnName": "Tax",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_total_value",
+                  "NewColumnName": "Total",
+                },
+              },
+              {
+                "RenameColumnOperation": {
+                  "ColumnName": "po_vsc_total_value",
+                  "NewColumnName": "VSC Total Value",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "client_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "system_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "facility_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "region_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6e243cc7-821b-40f6-b039-272b33aa75ff",
+                      "ColumnName": "Billable State",
+                      "Expression": "ifelse(
+    {billablestate}='NB','Non-Billable',
+    {billablestate}='B','Billable',
+    {billablestate}='Mixed','Mixed',
+    isNull({billablestate}),'None',
+    {billablestate}
+)",
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "PO Total",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "Regular",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total_regular_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "Exchange",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total_exchange_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "Shipping",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total_shipping_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "Tax",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total_tax_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "Total",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_total_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "VSC Total Value",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "po_vsc_total_value",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "ProjectOperation": {
+                  "ProjectedColumns": [
+                    "db",
+                    "op",
+                    "purchaseorderid",
+                    "serviceeventid",
+                    "facility_costcenterid",
+                    "vendorlocationid",
+                    "l_pospecialconditionid",
+                    "l_shippingid",
+                    "po_orgwide",
+                    "po_number",
+                    "po_amount",
+                    "po_exchgtotal",
+                    "PO Total",
+                    "po_shippingamt",
+                    "po_taxotheramt",
+                    "po_description",
+                    "po_type",
+                    "po_approvalstatus",
+                    "po_notesint",
+                    "po_notesext",
+                    "po_billtoclient",
+                    "po_shipping",
+                    "po_paidbycreditcard",
+                    "po_cod",
+                    "po_trackingno",
+                    "po_shipexpected",
+                    "po_vendcontact",
+                    "po_vendphone",
+                    "po_vendemail",
+                    "po_received",
+                    "po_assigneduserid",
+                    "po_orderplaced",
+                    "po_orderplaceduserid",
+                    "po_created",
+                    "po_createduserid",
+                    "po_approved",
+                    "po_approveduserid",
+                    "po_cancelled",
+                    "po_cancelleduserid",
+                    "po_closed",
+                    "po_closeduserid",
+                    "po_lastupdated",
+                    "po_lastupdateduserid",
+                    "posourceid",
+                    "po_paymentterms",
+                    "shippinglabelcreated",
+                    "shippinglabelcreateduserid",
+                    "l_vscinvoicefrequencyid",
+                    "vendorid",
+                    "partssourceorderid",
+                    "ingestion_timestamp",
+                    "ingestion_operation",
+                    "ingestion_seq",
+                    "ingestion_time_from_seq",
+                    "ingestion_sequence",
+                    "partition_date",
+                    "potypelabel",
+                    "postatuslabel",
+                    "poapprovalstatuslabel",
+                    "po_created_label",
+                    "assigned_user_fullname",
+                    "client_businessregion",
+                    "vendorpaymentsunapproved",
+                    "waitingvendorpayments",
+                    "missingcredit",
+                    "billabletimeamt",
+                    "billablepartsamt",
+                    "netdays",
+                    "Regular",
+                    "Exchange",
+                    "Shipping",
+                    "Tax",
+                    "Total",
+                    "VSC Total Value",
+                    "defaulterpregionid",
+                    "iscostcenterinactive",
+                    "isfacilityinactive",
+                    "issysteminactive",
+                    "iscientinactive",
+                    "isinactive",
+                    "sestatus",
+                    "equipmentdescription",
+                    "client_id",
+                    "system_id",
+                    "facility_id",
+                    "region_id",
+                    "costcenterid",
+                    "hospitalsystemid",
+                    "vendorlocation",
+                    "system",
+                    "facility",
+                    "costcenter",
+                    "deviceclass",
+                    "facabbrev",
+                    "poassigned",
+                    "invoice_uploaded",
+                    "billablestate",
+                    "device",
+                    "manufacturer",
+                    "model",
+                    "cetag",
+                    "se_completedutc",
+                    "facility_equipmentid",
+                    "ismissingshipto",
+                    "is_sedeleted",
+                    "se_no",
+                    "entityident",
+                    "ismsystemid",
+                    "system_siteid",
+                    "completedapdate",
+                    "equipbudgetcoverage",
+                    "budgetamount",
+                    "exchgsopen",
+                    "partsnotreceived",
+                    "ready_to_close",
+                    "Billable State",
+                  ],
+                },
+              },
+            ],
+            "Source": {
+              "PhysicalTableId": "vipurchaseorderphy",
+            },
+          },
+        },
+        "Name": "vi_purchase_order_cdk",
+        "Permissions": [
+          {
+            "Actions": [
+              "quicksight:DescribeDataSet",
+              "quicksight:DescribeDataSetPermissions",
+              "quicksight:PassDataSet",
+              "quicksight:DescribeIngestion",
+              "quicksight:ListIngestions",
+              "quicksight:UpdateDataSet",
+              "quicksight:UpdateDataSetPermissions",
+            ],
+            "Principal": "arn:aws:quicksight:us-east-1:1234567890:user/default",
+          },
+        ],
+        "PhysicalTableMap": {
+          "vipurchaseorderphy": {
+            "RelationalTable": {
+              "DataSourceArn": {
+                "Fn::GetAtt": [
+                  "RedshiftDataSource",
+                  "Arn",
+                ],
+              },
+              "InputColumns": [
+                {
+                  "Name": "db",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "op",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "purchaseorderid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "serviceeventid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "facility_costcenterid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "vendorlocationid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "l_pospecialconditionid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "l_shippingid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_orgwide",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "po_number",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_amount",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_exchgtotal",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_total",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_shippingamt",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_taxotheramt",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_description",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_type",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_approvalstatus",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_notesint",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_notesext",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_billtoclient",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_shipping",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_paidbycreditcard",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "po_cod",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "po_trackingno",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_shipexpected",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_vendcontact",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_vendphone",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_vendemail",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_received",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_assigneduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_orderplaced",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_orderplaceduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_created",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_createduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_approved",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_approveduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_cancelled",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_cancelleduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_closed",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_closeduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_lastupdated",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "po_lastupdateduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "posourceid",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_paymentterms",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "shippinglabelcreated",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "shippinglabelcreateduserid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "l_vscinvoicefrequencyid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "vendorid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "partssourceorderid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "ingestion_timestamp",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "ingestion_operation",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ingestion_seq",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ingestion_time_from_seq",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ingestion_sequence",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "partition_date",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "potypelabel",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "postatuslabel",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "poapprovalstatuslabel",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "po_created_label",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "assigned_user_fullname",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "client_businessregion",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "vendorpaymentsunapproved",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "waitingvendorpayments",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "missingcredit",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "billabletimeamt",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "billablepartsamt",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "netdays",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "po_total_regular_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_total_exchange_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_total_shipping_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_total_tax_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_total_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "po_vsc_total_value",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "defaulterpregionid",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "iscostcenterinactive",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "isfacilityinactive",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "issysteminactive",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "iscientinactive",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "isinactive",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "sestatus",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "equipmentdescription",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "client_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "system_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "facility_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "region_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "costcenterid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "hospitalsystemid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "vendorlocation",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "system",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facility",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "costcenter",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "deviceclass",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facabbrev",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "poassigned",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "invoice_uploaded",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "billablestate",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "device",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "manufacturer",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "model",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "cetag",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "se_completedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "facility_equipmentid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "ismissingshipto",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "is_sedeleted",
+                  "Type": "BIT",
+                },
+                {
+                  "Name": "se_no",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "entityident",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ismsystemid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "system_siteid",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "completedapdate",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "equipbudgetcoverage",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "budgetamount",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "exchgsopen",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "partsnotreceived",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "ready_to_close",
+                  "Type": "STRING",
+                },
+              ],
+              "Name": "vi_purchase_order",
+              "Schema": "analytics",
+            },
+          },
+        },
+        "RowLevelPermissionDataSet": {
+          "Arn": "arn:aws:quicksight:us-east-1:719035735300:dataset/rls_permissions_cdk",
+          "FormatVersion": "VERSION_1",
+          "Namespace": "default",
+          "PermissionPolicy": "GRANT_ACCESS",
+          "Status": "ENABLED",
+        },
+      },
+      "Type": "AWS::QuickSight::DataSet",
+    },
+    "vismstatusdashboarddetail": {
+      "DependsOn": [
+        "rlspermissions",
+      ],
+      "Properties": {
+        "AwsAccountId": "123456789012",
+        "DataSetId": "vi_sm_status_dashboard_detail_cdk",
+        "DataSetUsageConfiguration": {
+          "DisableUseAsDirectQuerySource": false,
+          "DisableUseAsImportedSource": false,
+        },
+        "FieldFolders": {
+          "calculations": {
+            "Columns": [
+              "SM Scheduled",
+              "SM Scheduled Open",
+              "SM RFS",
+              "SM Scheduled Closed",
+              "SM CIU",
+              "SM Adjusted",
+              "SM UTL",
+              "SM COT No",
+              "SM COT Yes",
+              "SM INCL",
+              "SM ASM Completed",
+              "SM UFM",
+              "SM Completed Std",
+              "SM RSCD",
+              "SM Adjusted Completed",
+              "SM Adjusted Closed",
+              "SM Adjusted Open",
+              "SM Scheduled Completed",
+              "90% Target",
+              "60% Target",
+              "30% Target",
+              "Compl Displ",
+              "% Completed",
+            ],
+          },
+        },
+        "ImportMode": "SPICE",
+        "LogicalTableMap": {
+          "vismstatusdashboardlog": {
+            "Alias": "vi_sm_status_dashboard_detail",
+            "DataTransforms": [
+              {
+                "CastColumnTypeOperation": {
+                  "ColumnName": "facility_id",
+                  "NewColumnType": "STRING",
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6e41cec5-da13-4f63-b7b9-1318c30a7c9a",
+                      "ColumnName": "SM Scheduled",
+                      "Expression": "count(serviceeventid)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "8d72d7cc-5143-47ce-bd9c-ccc52f32a6d3",
+                      "ColumnName": "SM RFS",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=1)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "7d72f5a7-5061-43c4-a8c0-81e1c78a04cd",
+                      "ColumnName": "SM CIU",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=2)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "3c066f3d-aac6-4b5f-b6c9-8db7cbb54399",
+                      "ColumnName": "SM Adjusted",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}<>1 AND {se_smcomplcode}<>10)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "f936b001-59ef-408d-8f51-080ef6e5a87c",
+                      "ColumnName": "SM UTL",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=3)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "6963a92a-dcbf-4c67-a3ad-937c7d80a78c",
+                      "ColumnName": "SM COT No",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=4)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "c989477d-05ee-4486-8147-783976dff981",
+                      "ColumnName": "SM COT Yes",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=5)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "d2bdd92d-062a-4abe-a053-b139aabc72bb",
+                      "ColumnName": "SM INCL",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=6)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "eb59dbf7-6d5e-437a-bef0-b55d48b989da",
+                      "ColumnName": "SM ASM Completed",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=7)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "32930d7c-5173-4818-b718-92d355732e45",
+                      "ColumnName": "SM UFM",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=8)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "66d2aedf-2c70-4cbc-88f5-989600dfbf89",
+                      "ColumnName": "SM RSCD",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=10)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "562dc043-b4dc-47c7-8135-21b8f3f8774b",
+                      "ColumnName": "SM Completed Std",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}=9)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "9fbea252-38a5-44f9-a3a4-24782e400548",
+                      "ColumnName": "SM Adjusted Completed",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}<>1 and {se_smcomplcode}<>10 and isNotNull({se_workcompletedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "b6f8dbf3-7c78-4cdf-8882-b6bf7aea809c",
+                      "ColumnName": "SM Adjusted Closed",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}<>1 and {se_smcomplcode}<>10 and isNotNull({se_completedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "f1e174aa-03dc-47e8-b486-257ed27d1f4e",
+                      "ColumnName": "SM Adjusted Open",
+                      "Expression": "countIf({serviceeventid},{se_smcomplcode}<>1 and {se_smcomplcode}<>10 and isNull({se_workcompletedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "139d1e16-1eef-4ecb-ad08-956df91fd5b2",
+                      "ColumnName": "SM Scheduled Completed",
+                      "Expression": "countIf({serviceeventid},isNotNull({se_workcompletedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "05d0fae8-71ea-4479-9d57-c26710b9838a",
+                      "ColumnName": "SM Scheduled Closed",
+                      "Expression": "countIf({serviceeventid},isNotNull({se_completedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "577017aa-479f-4a32-8e00-8535528f11ed",
+                      "ColumnName": "SM Scheduled Open",
+                      "Expression": "countIf({serviceeventid},isNull({se_workcompletedutc}) and isNull({se_completedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "bdbdb3f8-d383-4fdb-b87a-473fc627b639",
+                      "ColumnName": "% Completed",
+                      "Expression": "ifelse(
+    ({SM Adjusted}) = 0, 
+    1.0,
+    ({SM Adjusted Completed}) / (({SM Adjusted}) * 1.0)
+)
+",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "7c723c78-3db7-42db-951f-115c6db23e4b",
+                      "ColumnName": "Compl Displ",
+                      "Expression": "concat( toString(coalesce( {SM Adjusted Completed} ,0)) ,' / ', toString(coalesce({SM Adjusted},0)) )",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "88753b0b-6c10-4265-882a-11d682401f45",
+                      "ColumnName": "30% Target",
+                      "Expression": "round(({SM Adjusted}) * 0.3)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "e949bb0e-325c-433e-a8cc-fbd8d9c7134b",
+                      "ColumnName": "60% Target",
+                      "Expression": "round({SM Adjusted} * 0.6,0)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "b31958f5-470d-45f9-9c4f-b315d299f2a1",
+                      "ColumnName": "90% Target",
+                      "Expression": "round({SM Adjusted} * 0.9,0)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "68ee429d-37bc-48be-bfd6-e11a37c9a132",
+                      "ColumnName": "High Risk",
+                      "Expression": "ifelse(
+{lifesupport}=1, 'High Risk','No High Risk'
+)",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "59f9a1d9-60a8-451c-b432-4016be95b855",
+                      "ColumnName": "SM Scheduled Closed - Completed",
+                      "Expression": "countIf({serviceeventid},isNotNull({se_workcompletedutc}) and isNotNull({se_completedutc}))",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "008004e5-acdb-4b6c-9a5e-c26bd78940bc",
+                      "ColumnName": "SM Status",
+                      "Expression": "ifelse(
+{se_smcomplcode}<>1 and {se_smcomplcode}<>10 and isNotNull({se_workcompletedutc}), 'Completed',
+{se_smcomplcode}<>1 and {se_smcomplcode}<>10 and isNull({se_workcompletedutc}),'Open'
+,'')",
+                    },
+                  ],
+                },
+              },
+              {
+                "CreateColumnsOperation": {
+                  "Columns": [
+                    {
+                      "ColumnId": "0c4f18fd-58fc-4d3c-bebf-adcad042d3cf",
+                      "ColumnName": "UTL KPI",
+                      "Expression": "{SM UTL}/{SM Adjusted}",
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM RFS",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Removed From Service",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM CIU",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Continuos in Use",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM UTL",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Unable to Located",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM COT No",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Completed On Time No",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM COT Yes",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Completed On Time Yes",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM INCL",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Open",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM ASM Completed",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "COMPLETE, On-Time (60-day window)",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM UFM",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Unavailable For Maintenance",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "TagColumnOperation": {
+                  "ColumnName": "SM RSCD",
+                  "Tags": [
+                    {
+                      "ColumnDescription": {
+                        "Text": "Closed, Rescheduled",
+                      },
+                    },
+                  ],
+                },
+              },
+              {
+                "ProjectOperation": {
+                  "ProjectedColumns": [
+                    "db",
+                    "client_id",
+                    "system_id",
+                    "region_id",
+                    "system_name",
+                    "facility_id",
+                    "facility_name",
+                    "facility_costcenterid",
+                    "costcenter_name",
+                    "cetag",
+                    "modelname",
+                    "manufacturer",
+                    "devicename",
+                    "noserial",
+                    "se_sm",
+                    "technician",
+                    "serviceeventid",
+                    "se_number",
+                    "se_initiatedutc",
+                    "se_workcompletedutc",
+                    "se_completedutc",
+                    "lifesupport",
+                    "se_smcomplcode",
+                    "total",
+                    "se_state_name",
+                    "managedsctype",
+                    "state_name",
+                    "sestat_name",
+                    "resolution",
+                    "l_seinitiatedbyid",
+                    "l_equipmentstatusid",
+                    "equipment_status",
+                    "SM Scheduled",
+                    "SM RFS",
+                    "SM CIU",
+                    "SM Adjusted",
+                    "SM UTL",
+                    "SM COT No",
+                    "SM COT Yes",
+                    "SM INCL",
+                    "SM ASM Completed",
+                    "SM UFM",
+                    "SM RSCD",
+                    "SM Completed Std",
+                    "SM Adjusted Completed",
+                    "SM Adjusted Closed",
+                    "SM Adjusted Open",
+                    "SM Scheduled Completed",
+                    "SM Scheduled Closed",
+                    "SM Scheduled Open",
+                    "% Completed",
+                    "Compl Displ",
+                    "30% Target",
+                    "60% Target",
+                    "90% Target",
+                    "High Risk",
+                    "SM Scheduled Closed - Completed",
+                    "SM Status",
+                    "UTL KPI",
+                  ],
+                },
+              },
+            ],
+            "Source": {
+              "PhysicalTableId": "vismstatusdashboardphy",
+            },
+          },
+        },
+        "Name": "vi_sm_status_dashboard_detail_cdk",
+        "Permissions": [
+          {
+            "Actions": [
+              "quicksight:DescribeDataSet",
+              "quicksight:DescribeDataSetPermissions",
+              "quicksight:PassDataSet",
+              "quicksight:DescribeIngestion",
+              "quicksight:ListIngestions",
+              "quicksight:UpdateDataSet",
+              "quicksight:UpdateDataSetPermissions",
+            ],
+            "Principal": "arn:aws:quicksight:us-east-1:1234567890:user/default",
+          },
+        ],
+        "PhysicalTableMap": {
+          "vismstatusdashboardphy": {
+            "RelationalTable": {
+              "DataSourceArn": {
+                "Fn::GetAtt": [
+                  "RedshiftDataSource",
+                  "Arn",
+                ],
+              },
+              "InputColumns": [
+                {
+                  "Name": "db",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "client_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "system_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "region_id",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "system_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facility_id",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "facility_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "facility_costcenterid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "costcenter_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "cetag",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "modelname",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "manufacturer",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "devicename",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "noserial",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "se_sm",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "technician",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "serviceeventid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "se_number",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "se_initiatedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "se_workcompletedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "se_completedutc",
+                  "Type": "DATETIME",
+                },
+                {
+                  "Name": "lifesupport",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "se_smcomplcode",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "total",
+                  "Type": "DECIMAL",
+                },
+                {
+                  "Name": "se_state_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "managedsctype",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "state_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "sestat_name",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "resolution",
+                  "Type": "STRING",
+                },
+                {
+                  "Name": "l_seinitiatedbyid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "l_equipmentstatusid",
+                  "Type": "INTEGER",
+                },
+                {
+                  "Name": "equipment_status",
+                  "Type": "STRING",
+                },
+              ],
+              "Name": "vi_sm_status_dashboard_detail",
+              "Schema": "analytics",
+            },
+          },
+        },
+        "RowLevelPermissionDataSet": {
+          "Arn": "arn:aws:quicksight:us-east-1:719035735300:dataset/rls_permissions_cdk",
+          "FormatVersion": "VERSION_1",
+          "Namespace": "default",
+          "PermissionPolicy": "GRANT_ACCESS",
+          "Status": "ENABLED",
+        },
+      },
+      "Type": "AWS::QuickSight::DataSet",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

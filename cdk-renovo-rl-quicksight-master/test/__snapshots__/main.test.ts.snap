@@ -1,0 +1,977 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "RedshiftServerlessNamespace": {
+      "Properties": {
+        "DbName": "dev",
+        "DefaultIamRoleArn": {
+          "Fn::GetAtt": [
+            "RedshiftServerlessNamespaceRole433DCFA2",
+            "Arn",
+          ],
+        },
+        "IamRoles": [
+          {
+            "Fn::GetAtt": [
+              "RedshiftServerlessNamespaceRole433DCFA2",
+              "Arn",
+            ],
+          },
+        ],
+        "LogExports": [
+          "userlog",
+          "connectionlog",
+          "useractivitylog",
+        ],
+        "ManageAdminPassword": true,
+        "NamespaceName": "renovo-namespace",
+      },
+      "Type": "AWS::RedshiftServerless::Namespace",
+    },
+    "RedshiftServerlessNamespaceRole433DCFA2": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "sagemaker.amazonaws.com",
+              },
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "redshift.amazonaws.com",
+              },
+            },
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "redshift-serverless.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonRedshiftAllCommandsFullAccess",
+              ],
+            ],
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AWSGlueConsoleFullAccess",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "RedshiftServerlessNamespaceRoleDefaultPolicy67C1901F": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListBucket",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Fn::ImportValue": "S3Stack:ExportsOutputRefRawBucket0C3EE094D6333DF9",
+                      },
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Fn::ImportValue": "S3Stack:ExportsOutputRefRawBucket0C3EE094D6333DF9",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "RedshiftServerlessNamespaceRoleDefaultPolicy67C1901F",
+        "Roles": [
+          {
+            "Ref": "RedshiftServerlessNamespaceRole433DCFA2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "RedshiftServerlessWorkgroup": {
+      "DependsOn": [
+        "RedshiftServerlessNamespace",
+      ],
+      "Properties": {
+        "BaseCapacity": 32,
+        "EnhancedVpcRouting": false,
+        "NamespaceName": "renovo-namespace",
+        "PubliclyAccessible": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "redshiftSg0A1853F8",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetIds": [
+          "p-12345",
+          "p-67890",
+        ],
+        "WorkgroupName": "renovo-workgroup",
+      },
+      "Type": "AWS::RedshiftServerless::Workgroup",
+    },
+    "redshiftSg0A1853F8": {
+      "Properties": {
+        "GroupDescription": "Redshift security group",
+        "GroupName": "redshift-sg-cdk",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "allow Glue to connect to Redshift on port 5439",
+            "FromPort": 5439,
+            "IpProtocol": "tcp",
+            "ToPort": 5439,
+          },
+        ],
+        "VpcId": "vpc-12345",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Snapshot 2`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
+          "S3Key": "2d56e153cac88d3e0c2f842e8e6f6783b8725bf91f95e0673b4725448a56e96d.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+          },
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "DeployGlueScriptsAwsCliLayerB02EE12E",
+          },
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.9",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::cdk-hnb659fds-assets-123456789012-us-east-1",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::cdk-hnb659fds-assets-123456789012-us-east-1/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::ImportValue": "S3Stack:ExportsOutputFnGetAttGlueScriptsBucketCD60B14CArnE6ACB0CD",
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::ImportValue": "S3Stack:ExportsOutputFnGetAttGlueScriptsBucketCD60B14CArnE6ACB0CD",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DeployGlueScriptsAwsCliLayerB02EE12E": {
+      "Properties": {
+        "Content": {
+          "S3Bucket": "cdk-hnb659fds-assets-123456789012-us-east-1",
+          "S3Key": "3322b7049fb0ed2b7cbb644a2ada8d1116ff80c32dca89e6ada846b5de26f961.zip",
+        },
+        "Description": "/opt/awscli/aws",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+    "DeployGlueScriptsCustomResourceEBEAB663": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DestinationBucketKeyPrefix": "scripts/",
+        "DestinationBucketName": {
+          "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+        },
+        "Prune": true,
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": [
+          "cdk-hnb659fds-assets-123456789012-us-east-1",
+        ],
+        "SourceObjectKeys": [
+          "c91d57ecb8fbbad4d1950c2640cf44ce7e22f45b6ef932f57daf4c211008afc0.zip",
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "SecretsManagerAccessPolicy55F17FE5": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "secretsmanager:GetSecretValue",
+              "Effect": "Allow",
+              "Resource": "arn:aws:secretsmanager:us-east-1:123456789012:secret:redshift!renovo-np-admin-*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "SecretsManagerAccessPolicy55F17FE5",
+        "Roles": [
+          {
+            "Ref": "glueCrawlerRoleF4093BE4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "glueCrawlerRoleF4093BE4": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "glue.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Assigns the managed policy AWSGlueServiceRole to AWS Glue Crawler so it can crawl S3 buckets",
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole",
+        ],
+        "RoleName": "AWSGlueServiceRole",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "glueCrawlerS3clrenovodb": {
+      "Properties": {
+        "DatabaseName": {
+          "Ref": "glueclrenovodb",
+        },
+        "Name": "s3-renovo-crawler",
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "SchemaChangePolicy": {
+          "DeleteBehavior": "DEPRECATE_IN_DATABASE",
+          "UpdateBehavior": "UPDATE_IN_DATABASE",
+        },
+        "Targets": {
+          "S3Targets": [
+            {
+              "Path": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "s3://",
+                    {
+                      "Fn::ImportValue": "S3Stack:ExportsOutputRefRawBucket0C3EE094D6333DF9",
+                    },
+                    "/renovolive/clRenovo/",
+                  ],
+                ],
+              },
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Glue::Crawler",
+    },
+    "glueCrawlerS3renovomasterdb": {
+      "Properties": {
+        "DatabaseName": {
+          "Ref": "gluerenovomasterdb",
+        },
+        "Name": "s3-renovomaster-crawler",
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "SchemaChangePolicy": {
+          "DeleteBehavior": "DEPRECATE_IN_DATABASE",
+          "UpdateBehavior": "UPDATE_IN_DATABASE",
+        },
+        "Targets": {
+          "S3Targets": [
+            {
+              "Path": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "s3://",
+                    {
+                      "Fn::ImportValue": "S3Stack:ExportsOutputRefRawBucket0C3EE094D6333DF9",
+                    },
+                    "/renovolive/RenovoMaster/",
+                  ],
+                ],
+              },
+            },
+          ],
+        },
+      },
+      "Type": "AWS::Glue::Crawler",
+    },
+    "glueJobAsset": {
+      "Properties": {
+        "Command": {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+                },
+                "/scripts/Controller.py",
+              ],
+            ],
+          },
+        },
+        "DefaultArguments": {
+          "--enable-glue-datacatalog": true,
+        },
+        "Description": "Controller Glue Job",
+        "ExecutionProperty": {
+          "MaxConcurrentRuns": 50,
+        },
+        "GlueVersion": "4.0",
+        "MaxRetries": 0,
+        "Name": "Controller_cdk",
+        "NumberOfWorkers": 10,
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "Timeout": 120,
+        "WorkerType": "G.1X",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "glueJobIncClTables": {
+      "Properties": {
+        "Command": {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+                },
+                "/scripts/Inc_cl_tables_cdk.py",
+              ],
+            ],
+          },
+        },
+        "DefaultArguments": {
+          "--conf": "spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions --conf spark.sql.catalog.glue_catalog=org.apache.iceberg.spark.SparkCatalog --conf spark.sql.catalog.glue_catalog.catalog-impl=org.apache.iceberg.aws.glue.GlueCatalog --conf spark.sql.catalog.glue_catalog.io-impl=org.apache.iceberg.aws.s3.S3FileIO --conf spark.sql.catalog.glue_catalog.warehouse=file:///tmp/spark-warehouse --conf spark.sql.parquet.datetimeRebaseModeInRead=LEGACY",
+          "--datalake-formats": "iceberg",
+          "--enable-glue-datacatalog": true,
+          "--source_db": "clrenovo-db",
+          "--table_name": "clients",
+          "--table_pk": "clientid",
+          "--type": "incremental",
+        },
+        "Description": "Glue job for incremental cl tables",
+        "ExecutionProperty": {
+          "MaxConcurrentRuns": 50,
+        },
+        "GlueVersion": "4.0",
+        "MaxRetries": 0,
+        "Name": "Inc_cl_tables_cdk",
+        "NumberOfWorkers": 10,
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "Timeout": 120,
+        "WorkerType": "G.1X",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "glueJobIncRenovoTables": {
+      "Properties": {
+        "Command": {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+                },
+                "/scripts/Inc_renovo_tables_cdk.py",
+              ],
+            ],
+          },
+        },
+        "Connections": {
+          "Connections": [
+            "redshift_con_cdk",
+          ],
+        },
+        "DefaultArguments": {
+          "--enable-glue-datacatalog": true,
+          "--extra-py-files": "s3://aws-glue-studio-transforms-510798373988-prod-us-east-1/gs_common.py,s3://aws-glue-studio-transforms-510798373988-prod-us-east-1/gs_now.py",
+        },
+        "Description": "Glue job for incremental renovo tables",
+        "ExecutionProperty": {
+          "MaxConcurrentRuns": 50,
+        },
+        "GlueVersion": "4.0",
+        "MaxRetries": 0,
+        "Name": "Inc_renovo_tables_cdk",
+        "NumberOfWorkers": 10,
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "Timeout": 120,
+        "WorkerType": "G.1X",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "glueJobRefreshMaterializedViews": {
+      "Properties": {
+        "Command": {
+          "Name": "glueetl",
+          "PythonVersion": "3",
+          "ScriptLocation": {
+            "Fn::Join": [
+              "",
+              [
+                "s3://",
+                {
+                  "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+                },
+                "/scripts/RefreshMaterializedViews.py",
+              ],
+            ],
+          },
+        },
+        "Connections": {
+          "Connections": [
+            "redshift_con_cdk",
+          ],
+        },
+        "DefaultArguments": {
+          "--enable-glue-datacatalog": true,
+          "--extra-py-files": "s3://aws-glue-studio-transforms-510798373988-prod-us-east-1/gs_common.py,s3://aws-glue-studio-transforms-510798373988-prod-us-east-1/gs_now.py",
+        },
+        "Description": "Glue job to refresh materialized views",
+        "ExecutionProperty": {
+          "MaxConcurrentRuns": 50,
+        },
+        "GlueVersion": "4.0",
+        "MaxRetries": 0,
+        "Name": "RefreshMaterializedViews_cdk",
+        "NumberOfWorkers": 10,
+        "Role": {
+          "Fn::GetAtt": [
+            "glueCrawlerRoleF4093BE4",
+            "Arn",
+          ],
+        },
+        "Timeout": 120,
+        "WorkerType": "G.1X",
+      },
+      "Type": "AWS::Glue::Job",
+    },
+    "glueUnifiedDb": {
+      "Properties": {
+        "CatalogId": "123456789012",
+        "DatabaseInput": {
+          "Name": "unifieddb",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "glueclrenovodb": {
+      "Properties": {
+        "CatalogId": "123456789012",
+        "DatabaseInput": {
+          "Name": "clrenovo-db",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "gluerenovomasterdb": {
+      "Properties": {
+        "CatalogId": "123456789012",
+        "DatabaseInput": {
+          "Name": "renovomaster-db",
+        },
+      },
+      "Type": "AWS::Glue::Database",
+    },
+    "iamPolicyForAssets6C1588FD": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:ListBucket",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Fn::ImportValue": "S3Stack:ExportsOutputRefRawBucket0C3EE094D6333DF9",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Fn::ImportValue": "S3Stack:ExportsOutputRefGlueScriptsBucketCD60B14CE1376387",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "gluePolicyWorkflowAssetAccess",
+        "Roles": [
+          {
+            "Ref": "glueCrawlerRoleF4093BE4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "triggerController": {
+      "Properties": {
+        "Actions": [
+          {
+            "JobName": "Controller_cdk",
+          },
+        ],
+        "Name": "Trigger_Controller",
+        "Schedule": "cron(0 0 * * ? *)",
+        "StartOnCreation": true,
+        "Type": "SCHEDULED",
+      },
+      "Type": "AWS::Glue::Trigger",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Snapshot 3`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "ReadOnlyGluePolicy975DD8B5": {
+      "Properties": {
+        "Description": "Read only policy for Glue",
+        "ManagedPolicyName": "glue-read-only-policy",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "glue:Get*",
+                "glue:List*",
+                "glue:Query*",
+                "glue:BatchGet*",
+                "glue:Check*",
+                "glue:Search*",
+                "logs:DescribeLogGroups",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": "arn:aws:s3:::aws-glue-assets-*/*",
+            },
+            {
+              "Action": "logs:DescribeLogStreams",
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:us-east-1:123456789012:log-group:/aws-glue/*",
+            },
+            {
+              "Action": "logs:GetLogEvents",
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:us-east-1:123456789012:log-group:/aws-glue/*:log-stream:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "ReadOnlyQuickSightPolicyC8EF62D5": {
+      "Properties": {
+        "Description": "Read only policy for QuickSight",
+        "ManagedPolicyName": "quicksight-read-only-policy",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "quicksight:List*",
+                "quicksight:Search*",
+                "quicksight:Describe*",
+                "quicksight:Get*",
+                "quicksight:Pass*",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "ReadOnlyRedshiftPolicy20E152B9": {
+      "Properties": {
+        "Description": "Read only policy for Redshift",
+        "ManagedPolicyName": "redshift-read-only-policy",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "redshift:Describe*",
+                "redshift:List*",
+                "redshift:View*",
+                "redshift:Get*",
+                "redshift:Fetch*",
+                "redshift-serverless:List*",
+                "redshift-serverless:Describe*",
+                "redshift-serverless:Get*",
+                "redshift-data:List*",
+                "redshift-data:Describe*",
+                "redshift-data:Get*",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": "logs:DescribeLogStreams",
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/redshift/*",
+            },
+            {
+              "Action": "logs:GetLogEvents",
+              "Effect": "Allow",
+              "Resource": "arn:aws:logs:us-east-1:123456789012:log-group:/aws/redshift/*:log-stream:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
